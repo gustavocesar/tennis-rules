@@ -1,0 +1,57 @@
+<div class="text-center">
+
+    <div class="container">
+        <div class="row mb-2">
+            <div class="col-sm"></div>
+            <div class="col-sm">
+                <h1 class="display-4">Games</h1>
+            </div>
+            <div class="col-sm">
+                @Html.ActionLink("Novo Game", "NewGame", "Games", null, new { @class = "btn btn-primary"})
+            </div>
+        </div>
+    </div>
+    
+    <hr />
+
+    @if (ViewBag.Games.Count == 0)
+    {
+        <p>Nenhum registro encontrado</p>
+    }
+    else
+    {
+        <div class="container">
+            <div class="row justify-content-md-center">
+                @foreach (var game in ViewBag.Games)
+                {
+                    <div class="card mb-3 mr-3">
+                        <div class="card-header">
+                            Game #@game.Id
+                            @if (@game.Empatado.Value)
+                            {
+                                <span class="badge badge-warning pull-right ml-3">Empatado!</span>
+                            }
+                        </div>
+                        <div class="card-body">
+                            <table class="table table-borderless text-center">
+                                <tr>
+                                    @if (@game.JogadorVitorioso != null)
+                                    {
+                                        <td>@game.Jogador1.Nome <br> @game.PontuacaoJogador1.Pontos <br> @if(@game.Jogador1 == @game.JogadorVitorioso) {<span class="badge badge-success">Vitória!</span>}</td>
+                                        <td>@game.Jogador2.Nome <br> @game.PontuacaoJogador2.Pontos <br> @if(@game.Jogador2 == @game.JogadorVitorioso) {<span class="badge badge-success">Vitória!</span>}</td>
+                                    }
+                                    else
+                                    {
+                                        <td>@game.Jogador1.Nome <br> @game.PontuacaoJogador1.Pontos <br> @Html.ActionLink("Pontuar", "Pontuar", "Games", new { gameId = @game.Id, jogadorId = @game.Jogador1.Id}, new { @class = "btn btn-outline-success btn-sm mt-2"}) <br> @if(@game.VantagemJogador1) {<span class="badge badge-secondary">Vantagem</span>} </td>
+                                        <td>@game.Jogador2.Nome <br> @game.PontuacaoJogador2.Pontos <br> @Html.ActionLink("Pontuar", "Pontuar", "Games", new { gameId = @game.Id, jogadorId = @game.Jogador2.Id}, new { @class = "btn btn-outline-success btn-sm mt-2"}) <br> @if(@game.VantagemJogador2) {<span class="badge badge-secondary">Vantagem</span>}</td>
+                                    }
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    }
+
+</div>
